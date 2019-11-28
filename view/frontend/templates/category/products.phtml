@@ -1,0 +1,20 @@
+<?php
+use Magento\Framework\App\Action\Action;
+?>
+<?php $childCategory = $block->getChildrenCategories(); ?>
+
+<?php if ($childCategory->count()>0) : ?>
+    <?php foreach ($childCategory as $category) : ?>
+        <h1 style="border-bottom: 1px solid #777"><?= $category->getName() ?></h1>
+        <?php $blockProduct = $block->getLayout()->createBlock('Dtn\ReturnCate\Block\Product\ListProduct') ?>
+        <?php $blockProduct->setCategoryId($category->getId()) ?>
+        <?= $blockProduct->setTemplate('product/list.phtml')->toHtml() ?>
+        <h5 style="text-align: right">
+            <a href="<?= $category->getUrl() ?>">See all <?= $category->getName() ?> -></a>
+        </h5><br><br>
+    <?php endforeach; ?>
+<?php else: ?>
+    <?php if (!$this->isContentMode() || $this->isMixedMode()): ?>
+        <?= $this->getProductListHtml() ?>
+    <?php endif; ?>
+<?php endif; ?>
